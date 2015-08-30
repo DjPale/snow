@@ -30,6 +30,8 @@
       <!-- consistency, ios is a better define than iphone and should always be used in snow instead -->
    <set name="ios" value="1" if="iphone" />
 
+  <set name="rpi" value="1" if="RASPBERRYPI" />
+
       <!-- where to build from -->
    <!-- <set name="SNOW_ROOT" value="${haxelib:snow}/project/" /> -->
    <set name="SNOW_ROOT" value="" />
@@ -97,7 +99,7 @@
    <!-- <set name="SNOW_LIB_SDL_SHARED_EXTERNAL" value="1" /> -->
 
       <!-- sometimes glew needs to be disabled because it can make null function pointers -->
-   <set name="SNOW_LIB_GLEW" value="1" unless="android || ios"/>
+   <set name="SNOW_LIB_GLEW" value="1" unless="android || ios || rpi"/>
       <!-- always using OpenAL for main platforms by default, currently static linked only on targets that use this version (wip) -->
    <set name="SNOW_LIB_OPENAL" value="1"/>
    <set name="native_toolkit_openal_static" value="1"/>
@@ -138,7 +140,8 @@
       <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/theora/include/"/>
       <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/include/"/>
       <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/OpenAL32/include/"/>
-
+      <compilerflag value="-I/opt/vc/include/" if="rpi" />
+	
          <!-- c++ defines -->
       <compilerflag value="-DHX_SNOW"  />
       <compilerflag value="-DSNOW_CORE_LOOP"          if="SNOW_CORE_LOOP"/>
@@ -161,7 +164,7 @@
 
          <compilerflag value="-DSNOW_USE_OPENGL" />
          <compilerflag value="-DGL_GLEXT_PROTOTYPES"/>
-         <compilerflag value="-DSNOW_GLES"              if="android || ios"/>
+         <compilerflag value="-DSNOW_GLES"              if="android || ios || rpi"/>
 
          <file name="${SRC_DIR}/render/opengl/snow_render_opengl.cpp" />
 
@@ -245,8 +248,7 @@
 
          <file name="${SRC_DIR}/platform/linux/snow_linux.cpp"/>
          <file name="${SRC_DIR}/platform/linux/snow_linux_filewatch.cpp"/>
-         <file name="${SRC_DIR}/platform/linux/snow_linux_filedialogs.cpp"/>
-
+         <file name="${SRC_DIR}/platform/linux/snow_linux_filedialogs.cpp"/>	
       </section>
 
       <section if="windows">
@@ -354,6 +356,7 @@
             <lib name="oleaut32.lib" />
             <lib name="version.lib" />
             <lib name="ws2_32.lib"  />
+
             <lib name="wldap32.lib" />
             <lib name="shell32.lib" />
             <lib name="comdlg32.lib" />
@@ -363,7 +366,11 @@
             <lib name="${HXCPP}/lib/${BINDIR}/liblinuxcompat.a" />
             <lib name="-lpthread" />
             <lib name="-lrt" />
-            <lib name="-lGL" />
+            <lib name="-lGL" unless="rpi" />
+		<flag value="-L/opt/vc/lib/" if="rpi" />
+		<lib name="-lEGL" if="rpi" />
+		<lib name="-lbcm_host" if="rpi" />
+		<lib name="-lGLESv2" if="rpi" />
 
                 <!-- These are from `pkg-config --libs gtk+-3.0` -->
             <lib name="-lgtk-3"  unless="SNOW_NO_GTK" if="SNOW_USE_GTK3"/>
