@@ -1,9 +1,9 @@
 [submodule "project/src/libs/sdl"]
 	path = project/src/libs/sdl
-	url = https://github.com/native-toolkit/sdl.git
+	url = https://github.com/DjPale/sdl.git
 [submodule "project/src/libs/openal"]
 	path = project/src/libs/openal
-	url = https://github.com/native-toolkit/openal.git
+	url = https://github.com/DjPale/openal.git
 [submodule "project/src/libs/openal-android"]
 	path = project/src/libs/openal-android
 	url = https://github.com/native-toolkit/openal-android.git
