@@ -98,7 +98,7 @@ class ALStream extends snow.modules.openal.sound.ALSound {
         //continue to play until it consumes them up.
     function flush_queue() {
 
-        var queued = AL.getSourcei(source, AL.BUFFERS_QUEUED);
+        var queued = AL.getSourcei(source, AL.BUFFERS_PROCESSED);
 
         _debug('${owner.name} flushing queued buffers ' + queued);
 
